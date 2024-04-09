@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("submit_alphabet").addEventListener("click", function(event){
         event.preventDefault();
         var input = document.getElementById("usersAlphabet").value;
+        console.log("input: " + input)
         ajaxRequest('/create_alphabet/', {inputU:input}, 'alphabetForm', createAlphabet)
         clearDivs();
     })
@@ -42,8 +43,16 @@ document.addEventListener("DOMContentLoaded", function() {
     function createAlphabet(data) {
         var input = document.getElementById("usersAlphabet");
         var divE = document.getElementById("alphabet");
-        if (divE) {
-            divE.innerHTML = ""; // Clear previous content
+        divE.innerHTML = ""; // Clear previous content
+
+        if(data.alphabet.success == false){
+            input.value = "";
+            var errorDiv = document.createElement('div');
+            errorDiv.classList.add('alert');
+            errorDiv.classList.add('alert-danger');
+            errorDiv.textContent = data.alphabet.message;
+            divE.appendChild(errorDiv);
+        }else{
     
             for (var i = 0; i < data.alphabet.length; i++) {
                 var h4 = document.createElement('h4');
@@ -53,11 +62,9 @@ document.addEventListener("DOMContentLoaded", function() {
                  // Add comma if it's not the last letter
                  i < data.alphabet.length-1 && divE.appendChild(document.createTextNode(","));
             }
-        } else {
-            alert("No such div element with ID 'alphabet'");
-        }
         divE.parentNode.style.gridTemplateRows = "1fr";
         changeButton('submit_alphabet', input)
+        }
     }
     
 

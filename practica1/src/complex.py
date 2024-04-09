@@ -13,7 +13,8 @@ import re
     # [0-9](i|"")(+|-)[0-9](i|"")
 
 def validateComplex(cadena):
-    patron = r'^-?(((\d+(\.\d*)?)|e(\^\d*)?))?[+-]?((\d+(\.\d*)?)|e(\^\d*)+i$)?'
+    patron = r'^\s*(-?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)\s*(([-+]\s*(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)?i)?\s*$'
+
     return bool(re.match(patron, cadena))
 
 

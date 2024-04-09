@@ -12,6 +12,7 @@ def create_alphabet(request):
     userInput = request.POST['inputU']
     global alphabet  # Access the global variable
     alphabet = regex.generate_alphabet(userInput)
+    print(alphabet)
     return JsonResponse({'alphabet': alphabet})
 
 def compare_strings(request):

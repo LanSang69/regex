@@ -4,18 +4,28 @@ from .complex import validateComplex
 def generate_alphabet(input_str):
     alphabet = []
 
-    if '-' in input_str:
+    if '-' in input_str and ',' not in input_str:
         indexes = [i for i, char in enumerate(input_str) if char == '-']
         for i in indexes:
-                left = input_str[i-1]
-                right = input_str[i+1]
-                for char in range(ord(left), ord(right)+1):
-                    if chr(char) not in alphabet:
-                        alphabet.append(chr(char))
-    else:
+            left = input_str[i-1]
+            right = input_str[i+1]
+            if ord(left) > ord(right):
+                return {"success": False, "message": "Rango inválido"}
+            for char in range(ord(left), ord(right)+1):
+                if chr(char) not in alphabet:
+                    alphabet.append(chr(char))
+    elif ',' in input_str:
         for char in input_str:
-            if char.isdigit() or char.isalpha():
+            if (char.isdigit() or char.isalpha()) and char not in alphabet: 
                 alphabet.append(char)
+    elif len(input_str) == 0:
+        return alphabet
+    else:
+        first_char = input_str[0]
+        if first_char.isalpha() or first_char.isdigit():
+            alphabet.append(first_char)
+        else:
+            return {"success": False, "message": "Caracter inválido"}
 
     return alphabet
 
@@ -25,15 +35,15 @@ def compare_strings(w1, w2, alphabet):
     if not w1 and not w2:
         return {"success": False, "message": "Las cadenas no están definidas"}
     if not w1:
-        return {"success": False, "message": "La cadena w1 no está definida"}
+        return {"success": False, "message": "La cadena 1 no está definida"}
     if not w2:
-        return {"success": False, "message": "La cadena w2 no está definida"}
+        return {"success": False, "message": "La cadena 2 no está definida"}
     if not stringsLength(w1, w2):
-        return {"success": False, "message": "La longitud de w1 debe ser menor o igual a la longitud de w2"}
+        return {"success": False, "message": "La longitud de la cadena 1 debe ser menor o igual a la longitud de la cadena 2"}
     if not validate(alphabet, w1):
-        return {"success": False, "message": "La cadena w1 no es parte del alfabeto"}
+        return {"success": False, "message": "La cadena 1 no es parte del alfabeto"}
     if not validate(alphabet, w2):
-        return {"success": False, "message": "La cadena w2 no es parte del alfabeto"}
+        return {"success": False, "message": "La cadena 2 no es parte del alfabeto"}
     
     result = {
         "sufijoP": False,
@@ -68,7 +78,7 @@ def generateLanguage(alphabet, np, l):
         return {"success": False, "message": "El alfabeto no ha sido creado"}
     
     if not np or not l:
-        return {"success": False, "message": "Los valores np y l deben estar definidos"}
+        return {"success": False, "message": "Los valores numero de palabras y longitud deben estar definidos"}
     
     L1 = generate_words(alphabet, int(np), int(l))
     L2 = generate_words(alphabet, int(np), int(l))
