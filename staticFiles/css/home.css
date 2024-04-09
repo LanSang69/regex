@@ -36,6 +36,11 @@ body {
     overflow: hidden;
 }
 
+#powerLanguage, #lenguajes{
+    max-height: 45vh;
+    overflow: scroll;
+}
+
 .d-flex{
     gap: 2px;
 }
